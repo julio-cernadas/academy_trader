@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block content%} 
+    <a class="logo" href=/trade>
+{% endblock %}
+
+{% block body %}
+    <div id="page-wrapper" style="background-color:#edf7ed">
+        <div class="container-fluid">
+            <div class="row bg-title">
+                <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                    <h4 class="page-title">Place Transaction</h4> </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-xs-12">
+                    <div class="white-box">
+                        <div class="user-btm-box">
+                            <div class="col-md-100 text-left">
+                                <p class="text-purple"><i class="ti-"></i></p>
+                                <h1>Balance Remaining: ${{ balance }}</h1> </div>
+                        </div>
+                    </div>
+                    <div class="white-box">
+                        <div class="user-btm-box">
+                            <div class="col-md-100 text-left">
+                                <p class="text-purple"><i class="ti-"></i></p>
+                                <h1>Charge (Per Trade): $3.00</h1> </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8 col-xs-12">
+                    <div class="white-box">
+                        <form action="" method="post" class="form-horizontal form-material">
+                            <div class="form-group">
+                                <label class="col-md-12">TICKER</label>
+                                <div class="col-md-12">
+                                    <input type="text" placeholder="Symbol" class="form-control form-control-line" name="ticker" id="ticker"> </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-12">SHARES</label>
+                                <div class="col-md-12">
+                                    <input type="text" placeholder="1000" class="form-control form-control-line" name="shares" id="shares"> </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-12">TRADE TYPE</label>
+                                <div class="col-sm-12">
+                                    <select class="form-control form-control-line" name="type" id="type">
+                                        <option value="buy">BUY</option>
+                                        <option value="sell">SELL</option>
+                                        <option value="short">SHORT</option>    
+                                        <option value="cover">COVER</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <button class="btn btn-success">Submit</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>                    
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-lg-12 col-sm-12">
+                    <div class="white-box">
+                        <h3 class="box-title">CURRENT HOLDINGS</h3>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>TICKER</th>
+                                        <th>COMPANY</th>
+                                        <th>TYPE</th>
+                                        <th>SHARES</th>
+                                        <th>LAST PRICE</th>
+                                        <th>TOTAL</th>
+                                        <th>P/L</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if h_list != None %}
+                                        {% for ticker,company_name,type,shares,price,total,long_p_l,short_p_l in h_list %}
+                                            {% if type == 'LONG' %}
+                                                <tr>
+                                                    <td>{{ ticker.upper() }}</td>
+                                                    <td class="txt-oflo">{{ company_name }}</td>
+                                                    <td><span class="text-success">{{ type }}</span></td>
+                                                    <td><span class="text-success">{{ shares }}</span></td>
+                                                    <td><span class="text-info" style="color:#398fe5"
+                                                        >${{ price }}</span></td>
+                                                    <td><span class="text-info" style="color:#398fe5"
+                                                        >${{ total }}</span></td>
+                                                    {% if long_p_l >= 0.0 %}
+                                                        <td><span class="text-success" style="color:#398fe5"
+                                                            >${{ long_p_l }}</span></td>
+                                                    {% else %}
+                                                        <td><span class="text-danger" style="color:#398fe5"
+                                                            >${{ long_p_l }}</span></td>
+                                                    {% endif %}
+                                                </tr>
+                                            {% endif %}
+                                            {% if type == 'SHORT' %}
+                                                <tr>
+                                                    <td>{{ ticker.upper() }}</td>
+                                                    <td class="txt-oflo">{{ company_name }}</td>
+                                                    <td><span class="text-danger">{{ type }}</span></td>
+                                                    <td><span class="text-danger">{{ shares }}</span></td>
+                                                    <td><span class="text-info" style="color:#398fe5"
+                                                        >${{ price }}</span></td>
+                                                    <td><span class="text-info" style="color:#398fe5"
+                                                        >${{ total }}</span></td>
+                                                    {% if short_p_l >= 0.0 %}
+                                                        <td><span class="text-success" style="color:#398fe5"
+                                                            >${{ short_p_l }}</span></td>
+                                                    {% else %}
+                                                        <td><span class="text-danger" style="color:#398fe5"
+                                                            >${{ short_p_l }}</span></td>
+                                                    {% endif %}
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.container-fluid -->
+        <footer class="footer text-center"> 2018 &copy; Byte Academy Simulation</footer>
+    </div>
+</div>
+    
+{% endblock %}

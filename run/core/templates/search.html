@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block content%} 
+    <a class="logo" href=/logout>
+{% endblock %}
+
+{% block body %}
+        <div id="page-wrapper" style="background-color:#edf7ed">
+            <div class="container-fluid">
+                <div class="row bg-title">
+                    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+                        <h4 class="page-title">Search Result</h4> </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8 col-lg-12 col-sm-12">
+                        <div class="white-box">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>TICKER</th>
+                                            <th>COMPANY</th>
+                                            <th>EXCHANGE</th>
+                                            <th>PRICE</th>
+                                            <th>CHANGE</th>
+                                            <th>YTD CHANGE</th>
+                                            <th>YTD PERCENT</th>
+                                            <th>MARKET CAP</th>
+                                            <th>VOLUME</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% if h_list != None %}
+                                            {% for ticker,company_name,exchange,last_price,change,ytd,ytd_percnt,market_cap,volume in lst %}
+                                                <tr>
+                                                    <td>{{ticker.upper()}}</td>
+                                                    <td>{{company_name}}</td>
+                                                    <td>{{exchange}}</span></td>
+                                                    <td><span class="text-info" style="color:#398fe5">${{last_price}}</span></td>
+
+                                                    {% if change != 'N/A' %}
+                                                        {% if change >= 0.00 %}
+                                                            <td><span class="text-success">+{{change}}</span></td>
+                                                        {% else %}
+                                                            <td><span class="text-danger">{{change}}</span></td>   
+                                                        {% endif %}         
+                                                    {% else %}
+                                                        <td><span class="text-info" style="color:#398fe5">{{change}}</span></td>
+                                                    {% endif %}
+                                                    {% if ytd_percnt != 'N/A' %}
+                                                        {% if ytd_percnt >= 0.00 %}
+                                                            <td><span class="text-success">+{{ytd}}</span></td>
+                                                            <td><span class="text-success">+{{ytd_percnt}}%</span></td>
+                                                        {% else %}
+                                                            <td><span class="text-danger">-{{ytd}}</span></td> 
+                                                            <td><span class="text-danger">{{ytd_percnt}}%</span></td>  
+                                                        {% endif %}         
+                                                    {% else %}
+                                                        <td><span class="text-info" style="color:#398fe5">{{ytd}}</span></td>
+                                                        <td><span class="text-info" style="color:#398fe5">{{ytd_percnt}}</span></td>
+                                                    {% endif %}
+                                                    <td><span class="text-oflo">{{market_cap}}</span></td>
+                                                    <td><span class="text-oflo">{{volume}}</span></td>
+                                                </tr>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5 col-lg-9 col-sm-4 col-xs-4">
+                        <!-- TradingView Widget BEGIN -->
+                        <div class="tradingview-widget-container pull-left">
+                            <div id="tradingview_43362"></div>
+                            <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/symbols/NASDAQ-AAPL/" rel="noopener" target="_blank"></a></div>
+                            <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+                            <script type="text/javascript">
+                            new TradingView.widget(
+                                {
+                                "width": 1000,
+                                "height": 633,
+                                "symbol": "{{ ticker }}",
+                                "interval": "D",
+                                "timezone": "Etc/UTC",
+                                "theme": "Light",
+                                "style": "1",
+                                "locale": "en",
+                                "toolbar_bg": "#f1f3f6",
+                                "enable_publishing": false,
+                                "allow_symbol_change": true,
+                                "container_id": "tradingview_43362"
+                                }
+                            );
+                            </script>
+                        </div>
+                        <!-- TradingView Widget END -->
+                    </div>
+                    <div class="col-lg-3 col-sm-2 col-xs-2 pull-right">
+                        <iframe src="https://www.widgets.investing.com/live-indices?theme=lightTheme&hideTitle=true&pairs=166,27,172,177,175,176,1043106,23658,174,14601,178,179,41043,959206" width="100%" height="600" frameborder="0" allowtransparency="true" marginwidth="0" marginheight="0"></iframe><div class="poweredBy" style="font-family: Arial, Helvetica, sans-serif;"></div>
+                    </div>
+                </div>       
+            </div>
+            <footer class="footer text-center"> 2018 &copy; Byte Academy Simulation</footer>
+        </div>
+    </div>
+
+{% endblock %}

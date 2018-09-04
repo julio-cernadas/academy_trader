@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+
+{% block content %} 
+    <a class="logo" href=/portfolio>
+{% endblock %}
+
+{% block body %}
+        <div id="page-wrapper" style="background-color:#edf7ed">
+            <div class="container-fluid">
+                <div class="row bg-title">
+                    <div class="col-lg-12 col-md-4 col-sm-4 col-xs-12">
+                        <h4 class="page-title pull-left">Performance</h4> 
+                        <h5 class="text pull-right">Margin Remaining: ${{ margin_remaining }}</h5></div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3 col-sm-6 col-xs-12">
+                        <div class="white-box analytics-info">
+                            <h3 class="box-title">Market Value</h3>
+                            <ul class="list-inline two-part">
+                                <li>
+                                    <div id="sparklinedash"></div>
+                                </li>
+                                <li class="text-right"><i class="ti-arrow-up"></i> <span class="counter" style="color:#398fe5">{{ mrkt_val }}</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6 col-xs-12">
+                        <div class="white-box analytics-info">
+                            <h3 class="box-title">Balance</h3>
+                            <ul class="list-inline two-part">
+                                <li>
+                                    <div id="sparklinedash2"></div>
+                                </li>
+                                <li class="text-right"><i class="ti-arrow-up"></i> <span class="counter" style="color:#398fe5">{{ balance }}</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6 col-xs-12">
+                        <div class="white-box analytics-info">
+                            <h3 class="box-title">Margin Used</h3>
+                            <ul class="list-inline two-part">
+                                <li>
+                                    <div id="sparklinedash5"></div>
+                                </li>
+                                <li class="text-right"><i class="ti-arrow-up"></i> <span class="counter" style="color:#398fe5">{{ borrowed }}</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6 col-xs-12">
+                        <div class="white-box analytics-info">
+                            <h3 class="box-title">Realized P/L</h3>
+                            <ul class="list-inline two-part">
+                                <li>
+                                    <div id="sparklinedash4"></div>
+                                </li>
+                                <li class="text-right"><i class="ti-arrow-up"></i> <span class="counter text-danger">{{ p_l }}</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!--/.row -->
+                <!--row -->
+                <!-- /.row -->
+                <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <div class="white-box">
+                            <h3 class="box-title">Analysis</h3>
+                            <ul class="list-inline text-right">
+                                <li>
+                                    <h5><i class="fa fa-circle m-r-5 text-info"></i>Account Value (USD)</h5> </li>
+                            </ul>
+                            <div id="ct-visits" style="height: 405px;"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- table -->
+                <!-- ============================================================== -->
+                <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12">
+                        <div class="white-box">
+                            <h3 class="box-title">CURRENT HOLDINGS</h3>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>TICKER</th>
+                                            <th>COMPANY</th>
+                                            <th>TYPE</th>
+                                            <th>SHARES</th>
+                                            <th>LAST PRICE</th>
+                                            <th>TOTAL</th>
+                                            <th>P/L</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% if h_list != None %}
+                                            {% for ticker,company_name,type,shares,price,total,long_p_l,short_p_l in h_list %}
+                                                {% if type == 'LONG' %}
+                                                    <tr>
+                                                        <td>{{ ticker.upper() }}</td>
+                                                        <td class="txt-oflo">{{ company_name }}</td>
+                                                        <td><span class="text-success">{{ type }}</span></td>
+                                                        <td><span class="text-success">{{ shares }}</span></td>
+                                                        <td><span class="text-info" style="color:#398fe5"
+                                                            >${{ price }}</span></td>
+                                                        <td><span class="text-info" style="color:#398fe5"
+                                                            >${{ total }}</span></td>
+                                                        {% if long_p_l >= 0.0 %}
+                                                            <td><span class="text-success" style="color:#398fe5"
+                                                                >${{ long_p_l }}</span></td>
+                                                        {% else %}
+                                                            <td><span class="text-danger" style="color:#398fe5"
+                                                                >${{ long_p_l }}</span></td>
+                                                        {% endif %}
+                                                    </tr>
+                                                {% endif %}
+                                                {% if type == 'SHORT' %}
+                                                    <tr>
+                                                        <td>{{ ticker.upper() }}</td>
+                                                        <td class="txt-oflo">{{ company_name }}</td>
+                                                        <td><span class="text-danger">{{ type }}</span></td>
+                                                        <td><span class="text-danger">{{ shares }}</span></td>
+                                                        <td><span class="text-info" style="color:#398fe5"
+                                                            >${{ price }}</span></td>
+                                                        <td><span class="text-info" style="color:#398fe5"
+                                                            >${{ total }}</span></td>
+                                                        {% if short_p_l >= 0.0 %}
+                                                            <td><span class="text-success" style="color:#398fe5"
+                                                                >${{ short_p_l }}</span></td>
+                                                        {% else %}
+                                                            <td><span class="text-danger" style="color:#398fe5"
+                                                                >${{ short_p_l }}</span></td>
+                                                        {% endif %}
+                                                    </tr>
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="footer text-center"> 2018 &copy; Byte Academy Simulation</footer>
+        </div>
+    </div>
+
+
+
+    <!-- ============================================================== -->
+    <!-- All Jquery -->
+    <!-- ============================================================== -->
+
+    <!--Counter js -->
+    <script src="{{url_for('static',filename='plugins/bower_components/waypoints/lib/jquery.waypoints.js')}}"></script>
+    <script src="{{url_for('static',filename='plugins/bower_components/counterup/jquery.counterup.min.js')}}"></script>
+    <!-- chartist chart -->
+    <script src="{{url_for('static',filename='plugins/bower_components/chartist-js/dist/chartist.min.js')}}"></script>
+    <script src="{{url_for('static',filename='plugins/bower_components/chartist-plugin-tooltip-master/dist/chartist-plugin-tooltip.min.js')}}"></script>
+    <!-- Sparkline chart JavaScript -->
+    <script src="{{url_for('static',filename='plugins/bower_components/jquery-sparkline/jquery.sparkline.min.js')}}"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="{{url_for('static',filename='js1/dashboard1.js')}}"></script>
+    <script src="{{url_for('static',filename='plugins/bower_components/toast-master/js/jquery.toast.js')}}"></script>
+
+{% endblock %}
